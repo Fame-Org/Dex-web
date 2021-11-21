@@ -68,3 +68,14 @@ const Screen: React.FC<{}> = () => {
 }
 
 export default Screen
+
+
+
+
+function SelectToken(){
+    return <div>
+        <Button>
+            Select
+        </Button>
+    </div>
+}

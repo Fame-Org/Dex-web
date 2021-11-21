@@ -1,7 +1,7 @@
 import { CheckIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import {
     Menu, MenuButton, MenuList, MenuItem, MenuDivider, Box, Button, Center, Divider,
-    Heading, Text, Input, InputGroup, Spacer, Select, InputRightElement, toast, useToast
+    Heading, Text, Input, InputGroup, Spacer, Select, InputRightElement, toast, useToast, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure
 } from "@chakra-ui/react"
 import React, { useCallback } from "react"
 import { IoArrowDownSharp } from "react-icons/io5"
@@ -99,16 +99,16 @@ export const SwapCard: React.FC<{}> = () => {
             canSwap = true;
         }
     }
-    return <Box m="auto" w={{ md: "50%" }} bg="rgba(200,200,200,.2)" p="18px" rounded="lg" boxShadow="lg" mb="24px">
+    return <Box m="auto" w={{ md: "50%" }} bg="rgba(100,100,100,.2)" p="18px" rounded="lg" boxShadow="lg" mb="24px">
         <Box>
             <Heading size="md">Exchange</Heading>
-            <Text>Trade ASAs in an instant</Text>
             <Spacer h="4" />
             <Divider />
             <Spacer h="4" />
         </Box>
-        <Box my={"12px"} bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-            <Text fontSize="sm" >From | {" "}{from ?? "NotSet"}</Text>
+        <Text fontSize="sm" >From</Text>
+        <Box my={"12px"} mt="4px" bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
+            <Text fontSize="sm" >{from ?? ""}</Text>
             <InputGroup size="sm">
                 <Input fontSize="xl" disabled={false}
                     fontWeight="extrabold" placeholder="0.0" variant="unstyled" p="12px"
@@ -122,8 +122,9 @@ export const SwapCard: React.FC<{}> = () => {
         <Center>
             <IoArrowDownSharp />
         </Center>
-        <Box my={"12px"} bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-            <Text fontSize="sm" colorScheme="gray">To | {" "}{to ?? "NotSet"}</Text>
+        <Text fontSize="sm" colorScheme="gray">To</Text>
+        <Box my={"12px"} mt="4px" bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
+            <Text fontSize="sm" colorScheme="gray">{to ?? ""}</Text>
             <InputGroup size="sm">
                 <Input disabled={true} value={iget} placeholder="0.0" fontSize="xl" fontWeight="extrabold" variant="unstyled" p="12px"
                 />
@@ -165,4 +166,32 @@ export const SelectToken: React.FC<{ onSelect: (value: string) => void }> = ({ o
             })}
         </MenuList>
     </Menu>
+}
+
+
+function BasicUsage() {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+        <>
+            <Button onClick={onOpen}>Select</Button>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Lorem count={2} />
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                            Close
+                        </Button>
+                        <Button variant="ghost">Secondary Action</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
+    )
 }

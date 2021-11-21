@@ -12,6 +12,7 @@ import AppNavigation from "./navigation"
 import { Container, Row, Col } from "react-grid-system"
 import {
 } from "@chakra-ui/icons";
+import logo from '../../logo.png';
 
 interface PathItem {
     label: string;
@@ -24,7 +25,7 @@ type NavigationRootPathType = PathItem & { children?: PathItem[] };
 export const connect = () => {
     // @ts-ignore
     AlgoSigner.connect()
-    
+
 
 };
 
@@ -44,12 +45,15 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
     return (
         <div style={{ padding: "16px 24px", margin: 0, borderBottom: "1px solid rgba(200,200,200,.2)" }}>
             <div>
-                <HStack justify="space-between">
-                    <IconButton icon={<HamburgerIcon />} aria-label="dropdown"
-                        onClick={toggleDrawer} />
+                <HStack justify="space-between" alignItems="center">
+                    {breakpoint == "base" && <IconButton icon={<HamburgerIcon />} aria-label="dropdown"
+                        onClick={toggleDrawer} />}
+
+                    {breakpoint!=="base" && <img src={logo} width={40}/>}
+
                     <Button boxShadow="lg" onClick={() => {
-            connect();
-        }}>Connect</Button>
+                        connect();
+                    }}>Connect</Button>
                 </HStack>
 
             </div>

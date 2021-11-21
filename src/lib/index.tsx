@@ -15,7 +15,7 @@ const AppUIInit: React.FC<{}> = ({ children }) => {
     return (
         <ChakraProvider theme={theme}>
             <Router>
-                <div>
+                <div style={{backgroundColor:"#110A21"}}>
                     {children}
                 </div>
             </Router>
