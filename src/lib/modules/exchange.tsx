@@ -35,13 +35,11 @@ const Screen: React.FC<{}> = () => {
                             <Box m="auto" w={{ md: "50%" }} bg="rgba(200,200,200,.2)" p="24px" rounded="lg" boxShadow="lg" mb="24px">
                                 <Box>
                                     <Heading size="md">Add Liquidity</Heading>
-                                    <Text color="gray.300">Add liquidity to receive LP tokens</Text>
                                     <Spacer h="4" />
                                     <Divider />
                                     <Spacer h="4" />
                                 </Box>
                                 <Box my={"16px"} bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-                                    <Text color="gray.300">Input</Text>
                                     <InputGroup size="sm">
                                         <Input disabled={false} placeholder="0.0" variant="unstyled" p="12px" />
                                     </InputGroup>
@@ -50,12 +48,11 @@ const Screen: React.FC<{}> = () => {
                                     <IoArrowDownSharp />
                                 </Center>
                                 <Box my={"16px"} bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-                                    <Text color="gray.300">Input</Text>
                                     <InputGroup size="sm">
                                         <Input disabled={false} placeholder="0.0" variant="unstyled" p="12px" />
                                     </InputGroup>
                                 </Box>
-                                <Button size="lg" m="auto" as={Box} colorScheme="red" isFullWidth>Add liquidity</Button>
+                                <Button size="lg" m="auto" as={Box} colorScheme="red" disabled isFullWidth>Coming Soon</Button>
                             </Box>
 
                         </TabPanel>
@@ -71,11 +68,3 @@ export default Screen
 
 
 
-
-function SelectToken(){
-    return <div>
-        <Button>
-            Select
-        </Button>
-    </div>
-}

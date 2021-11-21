@@ -1,7 +1,5 @@
 import {
     Button,
-    useDisclosure,
-    useTheme,
     useBreakpoint,
     IconButton,
     HStack
@@ -51,7 +49,7 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
 
                     {breakpoint!=="base" && <img src={logo} width={40}/>}
 
-                    <Button boxShadow="lg" onClick={() => {
+                    <Button  onClick={() => {
                         connect();
                     }}>Connect</Button>
                 </HStack>

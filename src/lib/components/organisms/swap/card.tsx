@@ -1,7 +1,7 @@
 import { CheckIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import {
-    Menu, MenuButton, MenuList, MenuItem, MenuDivider, Box, Button, Center, Divider,
-    Heading, Text, Input, InputGroup, Spacer, Select, InputRightElement, toast, useToast, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure
+    Box, Button, Center, Divider, HStack,
+    Heading, Text, Input, InputGroup, Spacer, useToast, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, IconButton
 } from "@chakra-ui/react"
 import React, { useCallback } from "react"
 import { IoArrowDownSharp } from "react-icons/io5"
@@ -107,88 +107,79 @@ export const SwapCard: React.FC<{}> = () => {
             <Spacer h="4" />
         </Box>
         <Text fontSize="sm" >From</Text>
-        <Box my={"12px"} mt="4px" bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-            <Text fontSize="sm" >{from ?? ""}</Text>
-            <InputGroup size="sm">
-                <Input fontSize="xl" disabled={false}
-                    fontWeight="extrabold" placeholder="0.0" variant="unstyled" p="12px"
-                    onChange={(event) => {
-                        // @ts-ignore
-                        setAmount(event.target.value);
-                    }} />
-                <InputRightElement children={<SelectToken onSelect={(val) => setfrom(val)} />} width="100px" />
-            </InputGroup>
+        <Box my={"12px"} mt="4px" bg="rgba(100,100,100,.2)" p="8px" borderRadius={"md"}>
+            <Box>
+                <HStack>
+                    <Input fontSize="xl" disabled={false}
+                        fontWeight="extrabold" placeholder="0.0" variant="unstyled" p="12px"
+                        onChange={(event) => {
+                            // @ts-ignore
+                            setAmount(event.target.value);
+                        }} />
+                    <SelectAsset onSelect={(val) => setfrom(val)} selected={from} />
+                </HStack>
+
+            </Box>
+            {/* <InputRightElement children={<SelectToken onSelect={(val) => setfrom(val)} />} width="100px" /> */}
         </Box>
         <Center>
-            <IoArrowDownSharp />
+            <IconButton aria-label="">
+                <IoArrowDownSharp />
+            </IconButton>
         </Center>
         <Text fontSize="sm" colorScheme="gray">To</Text>
-        <Box my={"12px"} mt="4px" bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-            <Text fontSize="sm" colorScheme="gray">{to ?? ""}</Text>
-            <InputGroup size="sm">
+        <Box my={"12px"} mt="4px" bg="rgba(80,80,80,.2)" p="8px" borderRadius={"md"}>
+            <HStack>
                 <Input disabled={true} value={iget} placeholder="0.0" fontSize="xl" fontWeight="extrabold" variant="unstyled" p="12px"
                 />
-                <InputRightElement children={<SelectToken onSelect={(val) => setto(val)} />} width="100px" />
-            </InputGroup>
+                <SelectAsset onSelect={(val) => setto(val)}  selected={to}/>
+            </HStack>
         </Box>
 
-        <Button size="lg" m="auto" as={Box} disabled={!canSwap} colorScheme="twitter" isFullWidth onClick={() => {
+
+        <Button size="lg" m="auto" mt={"12px"} as={Box} disabled={!canSwap} colorScheme="twitter" color="white" bg="blue.300" isFullWidth onClick={() => {
             funcSwapAsset(from, to, amount, exchange, { from: account });
         }}>Swap</Button>
-        <Button size="lg" m="auto" as={Box} mt="12px" colorScheme="red" isFullWidth onClick={() => {
+        <Button size="lg" m="auto" as={Box} mt="12px" colorScheme="red" bg="red.500" color="white" isFullWidth onClick={() => {
             optIn(account, to);
-        }}>Opt-in</Button>
+        }}>Add ASA</Button>
     </Box>
 
 }
 
 
-
-export const SelectToken: React.FC<{ onSelect: (value: string) => void }> = ({ onSelect }) => {
-    return <Menu>
-        <MenuButton
-            px={4}
-            py={2}
-            transition="all 0.2s"
-            borderRadius="md"
-            borderWidth="1px"
-            _hover={{ bg: "gray.400" }}
-            _expanded={{ bg: "blue.400" }}
-            _focus={{ boxShadow: "outline" }}
-        >
-            Select <ChevronDownIcon />
-        </MenuButton>
-        <MenuList bg="gray.800" zIndex="10000000">
-            {defaultAssets.map(asset => {
-                return <MenuItem onClick={() => {
-                    onSelect(asset.name);
-                }}>{asset.name}</MenuItem>
-            })}
-        </MenuList>
-    </Menu>
-}
-
-
-function BasicUsage() {
+function SelectAsset({ onSelect, selected }: { onSelect: (value: string) => void, selected: string | null }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <>
-            <Button onClick={onOpen}>Select</Button>
+            <Button onClick={onOpen} px="18px" leftIcon={<div></div>} _focus={{}} rightIcon={<IoArrowDownSharp />}>
+                {selected == null ? "Select" : selected}
+            </Button>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                <ModalContent bg="#110A21">
+                    <ModalHeader>Select Asset</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
-                        <Lorem count={2} />
+                    <Divider />
+                    <ModalBody p="0px">
+                        <Box p="12px">
+                            <Input placeholder="Search Asset" />
+                        </Box>
+                        <Box h="250px" overflowY="scroll">
+                            {defaultAssets.map(asset => {
+                                return <Box>
+                                    <Box p="12px" px="24px" _hover={{ bg: "rgba(50,50,50,.3)" }} onClick={() => {
+                                        onSelect(asset.name);
+                                        onClose();
+                                    }}>{asset.name}</Box>
+                                    <Divider />
+                                </Box>
+                            })}
+                        </Box>
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                        <Button variant="ghost">Secondary Action</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
