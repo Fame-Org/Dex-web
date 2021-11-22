@@ -21,7 +21,7 @@ interface PathItem {
 }
 
 type NavigationRootPathType = PathItem & { children?: PathItem[] };
-const Uunc: React.FC<{}> = ({ }) => {
+const Screen: React.FC<{}> = ({ }) => {
   const appTheme = useTheme();
   const breakpoint = useBreakpoint();
   let [drawerOpen, updateDrawer] = React.useState(false);
@@ -62,4 +62,4 @@ const Uunc: React.FC<{}> = ({ }) => {
   );
 };
 
-export default Uunc;
+export default Screen;

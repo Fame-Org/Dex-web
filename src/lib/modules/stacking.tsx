@@ -4,6 +4,7 @@ import {
     InputLeftElement, Box, Text, Spacer, Progress, Button
 } from "@chakra-ui/react";
 import React from "react";
+import { ComingSoon } from "../components/organisms/coming-soon";
 import { AppPageBodySection } from "../components/pageBody";
 import { AppPageCoverSection } from '../components/pageCoverSection';
 
@@ -60,7 +61,7 @@ const Screen: React.FC<{}> = () => {
                 </Tabs>
                
                <div style={{overflow:"hidden"}}>
-               <PoolsList />
+               <ComingSoon/>
                </div>
             </AppPageBodySection>
         </div>

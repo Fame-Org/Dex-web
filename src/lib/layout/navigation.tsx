@@ -164,7 +164,7 @@ const Uunc: React.FC<{ drawerOpen: boolean, closeDrawer: () => void }> = ({ draw
       flexDirection="column"
       top="0">
       <Box p="16px 24px">
-        <Heading fontSize="2xl">JaySources</Heading>
+        <Heading fontSize="2xl"></Heading>
       </Box>
 
       <Box flex="1" p="16px 24px">
@@ -172,9 +172,9 @@ const Uunc: React.FC<{ drawerOpen: boolean, closeDrawer: () => void }> = ({ draw
       </Box>
       <Box p="16px 24px" display="flex" alignItems="center">
         <Divider style={{ flex: 1, marginRight: 12 }} />
-        <IconButton aria-label="icon">
+        {/* <IconButton aria-label="icon">
           <MoonIcon />
-        </IconButton>
+        </IconButton> */}
       </Box>
     </Box>
   )
@@ -192,12 +192,13 @@ const Uunc: React.FC<{ drawerOpen: boolean, closeDrawer: () => void }> = ({ draw
           placement="left"
           onClose={onClose}
           variant=""
+          
           autoFocus={false}
           size="xs"
         // finalFocusRef={btnRef}
         >
           <DrawerOverlay />
-          <DrawerContent>
+          <DrawerContent bg="#110A21">
             <DrawerCloseButton onClick={() => {
               closeDrawer();
             }} />
@@ -209,9 +210,9 @@ const Uunc: React.FC<{ drawerOpen: boolean, closeDrawer: () => void }> = ({ draw
 
             <DrawerFooter>
               <Divider style={{ flex: 1, marginRight: 12 }} />
-              <IconButton aria-label="icon">
+              {/* <IconButton aria-label="icon">
                 <MoonIcon />
-              </IconButton>
+              </IconButton> */}
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
