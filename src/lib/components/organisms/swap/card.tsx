@@ -1,7 +1,7 @@
 import { CheckIcon, ChevronDownIcon } from "@chakra-ui/icons"
 import {
-    Menu, MenuButton, MenuList, MenuItem, MenuDivider, Box, Button, Center, Divider,
-    Heading, Text, Input, InputGroup, Spacer, Select, InputRightElement, toast, useToast
+    Box, Button, Center, Divider, HStack,
+    Heading, Text, Input, InputGroup, Spacer, useToast, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, IconButton
 } from "@chakra-ui/react"
 import React, { useCallback } from "react"
 import { IoArrowDownSharp } from "react-icons/io5"
@@ -99,70 +99,90 @@ export const SwapCard: React.FC<{}> = () => {
             canSwap = true;
         }
     }
-    return <Box m="auto" w={{ md: "50%" }} bg="rgba(200,200,200,.2)" p="18px" rounded="lg" boxShadow="lg" mb="24px">
+    return <Box m="auto" w={{ md: "50%" }} bg="rgba(100,100,100,.2)" p="18px" rounded="lg" boxShadow="lg" mb="24px">
         <Box>
             <Heading size="md">Exchange</Heading>
-            <Text>Trade ASAs in an instant</Text>
             <Spacer h="4" />
             <Divider />
             <Spacer h="4" />
         </Box>
-        <Box my={"12px"} bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-            <Text fontSize="sm" >From | {" "}{from ?? "NotSet"}</Text>
-            <InputGroup size="sm">
-                <Input fontSize="xl" disabled={false}
-                    fontWeight="extrabold" placeholder="0.0" variant="unstyled" p="12px"
-                    onChange={(event) => {
-                        // @ts-ignore
-                        setAmount(event.target.value);
-                    }} />
-                <InputRightElement children={<SelectToken onSelect={(val) => setfrom(val)} />} width="100px" />
-            </InputGroup>
+        <Text fontSize="sm" >From</Text>
+        <Box my={"12px"} mt="4px" bg="rgba(100,100,100,.2)" p="8px" borderRadius={"md"}>
+            <Box>
+                <HStack>
+                    <Input fontSize="xl" disabled={false}
+                        fontWeight="extrabold" placeholder="0.0" variant="unstyled" p="12px"
+                        onChange={(event) => {
+                            // @ts-ignore
+                            setAmount(event.target.value);
+                        }} />
+                    <SelectAsset onSelect={(val) => setfrom(val)} selected={from} />
+                </HStack>
+
+            </Box>
+            {/* <InputRightElement children={<SelectToken onSelect={(val) => setfrom(val)} />} width="100px" /> */}
         </Box>
         <Center>
-            <IoArrowDownSharp />
+            <IconButton aria-label="">
+                <IoArrowDownSharp />
+            </IconButton>
         </Center>
-        <Box my={"12px"} bg="rgba(200,200,200,.2)" p="8px" borderRadius={"md"}>
-            <Text fontSize="sm" colorScheme="gray">To | {" "}{to ?? "NotSet"}</Text>
-            <InputGroup size="sm">
+        <Text fontSize="sm" colorScheme="gray">To</Text>
+        <Box my={"12px"} mt="4px" bg="rgba(80,80,80,.2)" p="8px" borderRadius={"md"}>
+            <HStack>
                 <Input disabled={true} value={iget} placeholder="0.0" fontSize="xl" fontWeight="extrabold" variant="unstyled" p="12px"
                 />
-                <InputRightElement children={<SelectToken onSelect={(val) => setto(val)} />} width="100px" />
-            </InputGroup>
+                <SelectAsset onSelect={(val) => setto(val)}  selected={to}/>
+            </HStack>
         </Box>
 
-        <Button size="lg" m="auto" as={Box} disabled={!canSwap} colorScheme="twitter" isFullWidth onClick={() => {
+
+        <Button size="lg" m="auto" mt={"12px"} as={Box} disabled={!canSwap} colorScheme="twitter" color="white" bg="blue.300" isFullWidth onClick={() => {
             funcSwapAsset(from, to, amount, exchange, { from: account });
         }}>Swap</Button>
-        <Button size="lg" m="auto" as={Box} mt="12px" colorScheme="red" isFullWidth onClick={() => {
+        <Button size="lg" m="auto" as={Box} mt="12px" colorScheme="red" bg="red.500" color="white" isFullWidth onClick={() => {
             optIn(account, to);
-        }}>Opt-in</Button>
+        }}>Add ASA</Button>
     </Box>
 
 }
 
 
+function SelectAsset({ onSelect, selected }: { onSelect: (value: string) => void, selected: string | null }) {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+        <>
+            <Button onClick={onOpen} px="18px" leftIcon={<div></div>} _focus={{}} rightIcon={<IoArrowDownSharp />}>
+                {selected == null ? "Select" : selected}
+            </Button>
 
-export const SelectToken: React.FC<{ onSelect: (value: string) => void }> = ({ onSelect }) => {
-    return <Menu>
-        <MenuButton
-            px={4}
-            py={2}
-            transition="all 0.2s"
-            borderRadius="md"
-            borderWidth="1px"
-            _hover={{ bg: "gray.400" }}
-            _expanded={{ bg: "blue.400" }}
-            _focus={{ boxShadow: "outline" }}
-        >
-            Select <ChevronDownIcon />
-        </MenuButton>
-        <MenuList bg="gray.800" zIndex="10000000">
-            {defaultAssets.map(asset => {
-                return <MenuItem onClick={() => {
-                    onSelect(asset.name);
-                }}>{asset.name}</MenuItem>
-            })}
-        </MenuList>
-    </Menu>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent bg="#110A21">
+                    <ModalHeader>Select Asset</ModalHeader>
+                    <ModalCloseButton />
+                    <Divider />
+                    <ModalBody p="0px">
+                        <Box p="12px">
+                            <Input placeholder="Search Asset" />
+                        </Box>
+                        <Box h="250px" overflowY="scroll">
+                            {defaultAssets.map(asset => {
+                                return <Box>
+                                    <Box p="12px" px="24px" _hover={{ bg: "rgba(50,50,50,.3)" }} onClick={() => {
+                                        onSelect(asset.name);
+                                        onClose();
+                                    }}>{asset.name}</Box>
+                                    <Divider />
+                                </Box>
+                            })}
+                        </Box>
+                    </ModalBody>
+
+                    <ModalFooter>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </>
+    )
 }

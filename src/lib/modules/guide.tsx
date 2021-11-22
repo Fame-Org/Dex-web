@@ -17,7 +17,7 @@ const Screen: React.FC<{}> = () => {
     const guides = ['Staking', 'Create Pool', 'Bridge', 'Others']
 
     return (
-        <div style={{ overflow: "auto" }}>
+        <div style={{  }}>
 
             <AppPageBodySection>
                 <Heading>Guide</Heading>
