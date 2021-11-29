@@ -37,7 +37,16 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
   };
 
   useEffect(() => {
-    connect();
+    try{
+      connect();
+    }
+    catch (err) {
+    console.log("error happened here!!!");
+    console.log({ err });
+    
+    throw err;
+  }
+    
   }, []);
 
   const breakpoint = useBreakpoint();
@@ -72,7 +81,7 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
           {breakpoint !== "base" && <img src={logo} width={40} />}
 
           {address ? (
-            <Button disabled>{truncateAddress(address)}</Button>
+            <Button style = {{backgroundColor: "00ADED"}} >{truncateAddress(address)}</Button>
           ) : (
             <Button
               onClick={() => {
