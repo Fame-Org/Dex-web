@@ -40,7 +40,7 @@ export const connect = (address: any, to: any) => {
 
 
 
-export const optIn = (address: any, to: any) => {
+export const optIn = async (address: any, to: any) => {
 
     let asset = defaultAssets.find((o) => o.name === to);
     let assetId = Number(asset?.id);
@@ -88,7 +88,8 @@ export const optIn = (address: any, to: any) => {
           console.log(transaction_id)
         // was successful
         console.log({ d });
-        alert("Opted-in asset successfully");
+        return
+        
       })
       .catch((e: any) => {
         // handleClientError(e.message);
