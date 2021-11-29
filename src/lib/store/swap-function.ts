@@ -614,14 +614,14 @@ const funcSwapAssetV2 = async (
         assetIndex: Number(assetIdFrom),
         from: _address,
         amount: Math.round(amount1),
-        to: SWAP_ADDRESS,
-        type: algosdk.TransactionType.pay,
+        to: lsigaddr,
+        type: algosdk.TransactionType.axfer,
         ...suggestedParams,
       });
 
       tx2 = new algosdk.Transaction({
         assetIndex: Number(assetIdTo),
-        from: SWAP_ADDRESS,
+        from: lsigaddr,
         amount: Math.round(amount2),
         to: _address,
         type: algosdk.TransactionType.axfer,
@@ -630,7 +630,7 @@ const funcSwapAssetV2 = async (
 
       tx3 = new algosdk.Transaction({
         from: _address,
-        to: SWAP_ADDRESS,
+        to: lsigaddr,
         amount: 2000,
         type: algosdk.TransactionType.pay, // Payment (pay)
         ...suggestedParams,
