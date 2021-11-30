@@ -6,7 +6,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import {} from "@chakra-ui/icons";
 import logo from "../../logo.png";
 import { truncateAddress } from "../utils/helper";
-import MyAlgo from '@randlabs/myalgo-connect';
+import MyAlgo from "@randlabs/myalgo-connect";
 // CSS Imports
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -17,7 +17,7 @@ interface PathItem {
 
 type NavigationRootPathType = PathItem & { children?: PathItem[] };
 
-export const connect = async() => {
+export const connect = async () => {
   // @ts-ignore
   const myAlgoWallet = new MyAlgo();
   await myAlgoWallet.connect({ shouldSelectOneAccount: true });
@@ -68,16 +68,16 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
     setAddress(null);
   };
 
-  useEffect(() => {
-    try {
-      connect();
-    } catch (err) {
-      console.log("error happened here!!!");
-      console.log({ err });
+  // useEffect(() => {
+  //   try {
+  //     connect();
+  //   } catch (err) {
+  //     console.log("error happened here!!!");
+  //     console.log({ err });
 
-      throw err;
-    }
-  }, []);
+  //     throw err;
+  //   }
+  // }, []);
 
   const breakpoint = useBreakpoint();
 
