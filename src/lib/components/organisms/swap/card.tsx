@@ -42,9 +42,11 @@ export const SwapCard: React.FC<{}> = () => {
   const GetAccounts = useCallback(async () => {
     try {
       // @ts-ignore
-      const r = await AlgoSigner.accounts({
-        ledger: "TestNet",
-      });
+      // const r = await AlgoSigner.accounts({
+      //   ledger: "TestNet",
+      // });
+      const myAlgoWallet = new MyAlgo();
+      const r = await myAlgoWallet.connect({ shouldSelectOneAccount: true });
 
       console.log(r);
 
@@ -68,22 +70,24 @@ export const SwapCard: React.FC<{}> = () => {
     try {
       toast({
         title: "Notice",
-        description: "Connecting algo wallet",
+        description: "Connecting MyAlgo wallet",
         duration: 2000,
       });
       // @ts-ignore
-      const r = await AlgoSigner.connect();
+      const myAlgoWallet = new MyAlgo();
+      const r = await myAlgoWallet.connect({ shouldSelectOneAccount: true });
+      //const r = await AlgoSigner.connect();
       console.log("conected");
       GetAccounts();
       return JSON.stringify(r, null, 2);
     } catch (e) {
       console.error(e);
-      console.log(`Couldn't find AlgoSigner!`);
-      toast({
-        title: "Notice",
-        description: "Couldn't find AlgoSigner!",
-        duration: 2000,
-      });
+      console.log(`Couldn't find MyAlgo wallet!`);
+      // toast({
+      //   title: "Notice",
+      //   description: "Couldn't find MyAlgo wallet!",
+      //   duration: 2000,
+      // });
       console.log("failed to connect ");
       return JSON.stringify(e, null, 2);
     }

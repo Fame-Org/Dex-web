@@ -1,5 +1,7 @@
 import {defaultAssets} from "./../store/default-assets"
 import axios from "axios"
+import algosdk, { Address, TransactionLike, TransactionType } from "algosdk";
+import MyAlgo from '@randlabs/myalgo-connect';
 
 export const fetchAssets = async (account: any) => {
     try {
@@ -31,9 +33,11 @@ export const fetchAssets = async (account: any) => {
   };
 
 
-export const connect = (address: any, to: any) => {
+export const connect = async(address: any, to: any) => {
     // @ts-ignore
-    AlgoSigner.connect()
+    //AlgoSigner.connect()
+    const myAlgoWallet = new MyAlgo();
+    await myAlgoWallet.connect({ shouldSelectOneAccount: true });
 
 };
 
@@ -41,60 +45,36 @@ export const connect = (address: any, to: any) => {
 
 
 export const optIn = async (address: any, to: any) => {
-
+    const myAlgoWallet = new MyAlgo();
+    const r = await myAlgoWallet.connect({ shouldSelectOneAccount: true });
     let asset = defaultAssets.find((o) => o.name === to);
     let assetId = Number(asset?.id);
+    const baseServer = "https://testnet-algorand.api.purestake.io/ps2";
+    const port = "";
+    const token = {
+      "X-API-Key": "B3SU4KcVKi94Jap2VXkK83xx38bsv95K5UZm2lab",
+    };
+    const client = new algosdk.Algodv2(token, baseServer, port);
 
-    // @ts-ignore
-    AlgoSigner.connect()
-      // fetch current parameters
-      .then(() =>
-        // @ts-ignore
-        AlgoSigner.algod({
-          ledger: "TestNet",
-          path: "/v2/transactions/params",
-        })
-      )
-      // sign new opt-in transaction
-      // @ts-ignore
-      .then((txParams) =>
-        // @ts-ignore
-        AlgoSigner.sign({
-          assetIndex: assetId,
-          from: address,
-          amount: 0,
-          to: address,
-          type: "axfer", // ASA Transfer (axfer)
-          fee: txParams["min-fee"],
-          firstRound: txParams["last-round"],
-          lastRound: txParams["last-round"] + 1000,
-          genesisID: txParams["genesis-id"],
-          genesisHash: txParams["genesis-hash"],
-          flatFee: true,
-        })
-      )
-      // send signed transaction
-      .then((signedTx: any) =>
-        // @ts-ignore
-        AlgoSigner.send({
-          ledger: "TestNet",
-          tx: signedTx.blob,
-        })
-      )
-      // wait for confirmation from the blockchain
-      .then((tx: any) => waitForAlgosignerConfirmation(tx)) // see algosignerutils.js
-      .then((d: any) => {
-          let transaction_id= "https://testnet.algoexplorer.io/tx/"+d["txId"];
-          console.log(transaction_id)
-        // was successful
-        console.log({ d });
-        return
-        
-      })
-      .catch((e: any) => {
-        // handleClientError(e.message);
-        console.error("error", e.message);
+    const suggestedParams = await client.getTransactionParams().do();
+    
+    const tx1 = new algosdk.Transaction({
+        assetIndex: Number(assetId),
+        from: r[0].address,
+        amount: Math.round(0),
+        to: r[0].address,
+        type: algosdk.TransactionType.axfer,
+        ...suggestedParams,
       });
+      
+      //const r = await myAlgoWallet.connect({ shouldSelectOneAccount: true });
+      const signedTxn = await myAlgoWallet.signTransaction(tx1.toByte());
+
+
+      //let signedTxn = await myAlgoWallet.signTransaction(tx1);
+      console.log(signedTxn.txID);
+  
+      await client.sendRawTransaction(signedTxn.blob).do();
 };
 
 
