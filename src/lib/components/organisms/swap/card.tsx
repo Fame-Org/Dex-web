@@ -21,6 +21,7 @@ import {
   useDisclosure,
   IconButton,
 } from "@chakra-ui/react";
+import MyAlgo from "@randlabs/myalgo-connect";
 import React, { useCallback } from "react";
 import { IoArrowDownSharp } from "react-icons/io5";
 import { fetchAssets, fetchRate, optIn } from "../../../services/algo";
@@ -167,14 +168,14 @@ export const SwapCard: React.FC<{}> = () => {
     }
   };
 
-  React.useEffect(() => {
-    // @ts-ignore
-    if (typeof AlgoSigner !== "undefined") {
-      ConnectAlgoSigner();
-    } else {
-      console.log("algo signer isnt installed");
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   // @ts-ignore
+  //   if (typeof AlgoSigner !== "undefined") {
+  //     ConnectAlgoSigner();
+  //   } else {
+  //     console.log("algo signer isnt installed");
+  //   }
+  // }, []);
 
   React.useEffect(() => {
     console.log({ from, to });
