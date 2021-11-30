@@ -6,7 +6,7 @@ import { confirmAlert } from "react-confirm-alert"; // Import
 import {} from "@chakra-ui/icons";
 import logo from "../../logo.png";
 import { truncateAddress } from "../utils/helper";
-
+import MyAlgo from '@randlabs/myalgo-connect';
 // CSS Imports
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -17,9 +17,11 @@ interface PathItem {
 
 type NavigationRootPathType = PathItem & { children?: PathItem[] };
 
-export const connect = () => {
+export const connect = async() => {
   // @ts-ignore
-  AlgoSigner.connect();
+  const myAlgoWallet = new MyAlgo();
+  await myAlgoWallet.connect({ shouldSelectOneAccount: true });
+  //AlgoSigner.connect();
 };
 
 const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
@@ -27,15 +29,18 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
 
   const connect = async () => {
     // @ts-ignore
-    await AlgoSigner?.connect();
+    //await AlgoSigner?.connect();
+    const myAlgoWallet = new MyAlgo();
+    const r = await myAlgoWallet.connect({ shouldSelectOneAccount: true });
     // @ts-ignore
-    const r = await AlgoSigner?.accounts({
-      ledger: "TestNet",
-    });
+    // const r = await AlgoSigner?.accounts({
+    //   ledger: "TestNet",
+    // });
 
-    console.log({ r });
+    console.log(r[0].address);
 
     const _address = r[0].address;
+    // @ts-ignore
     setAddress(_address);
   };
 
