@@ -1,11 +1,14 @@
 import { Button, useBreakpoint, IconButton, HStack } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import AppNavigation from "./navigation";
-import { Container, Row, Col } from "react-grid-system";
+import { confirmAlert } from "react-confirm-alert"; // Import
+
 import {} from "@chakra-ui/icons";
 import logo from "../../logo.png";
 import { truncateAddress } from "../utils/helper";
+
+// CSS Imports
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 interface PathItem {
   label: string;
@@ -36,17 +39,39 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
     setAddress(_address);
   };
 
+  const disconnect = () => {
+    confirmAlert({
+      title: "Confirm Logout",
+      message: "Are you sure you want to disconnect your wallet?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            disconnectWallet();
+          },
+        },
+        {
+          label: "No",
+          onClick: () => null,
+        },
+      ],
+    });
+  };
+
+  const disconnectWallet = () => {
+    localStorage.clear();
+    setAddress(null);
+  };
+
   useEffect(() => {
-    try{
+    try {
       connect();
+    } catch (err) {
+      console.log("error happened here!!!");
+      console.log({ err });
+
+      throw err;
     }
-    catch (err) {
-    console.log("error happened here!!!");
-    console.log({ err });
-    
-    throw err;
-  }
-    
   }, []);
 
   const breakpoint = useBreakpoint();
@@ -78,10 +103,17 @@ const Uunc: React.FC<{ toggleDrawer: () => void }> = ({ toggleDrawer }) => {
             />
           )}
 
-          {breakpoint !== "base" && <img src={logo} width={40} />}
+          {breakpoint !== "base" && (
+            <>
+              <img src={logo} width={40} />
+              <h1>JaySources</h1>
+            </>
+          )}
 
           {address ? (
-            <Button style = {{backgroundColor: "00ADED"}} >{truncateAddress(address)}</Button>
+            <Button style={{ backgroundColor: "00ADED" }} onClick={disconnect}>
+              {truncateAddress(address)}
+            </Button>
           ) : (
             <Button
               onClick={() => {
