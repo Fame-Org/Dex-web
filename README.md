@@ -1,6 +1,6 @@
 # Responsive React (Crypto Exchange) Template
 
-## Template pages 
+## Dex pages 
 * Stacking activity
 * Farming activity
 * Create pool
