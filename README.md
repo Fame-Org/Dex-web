@@ -1,4 +1,4 @@
-# Responsive React (Crypto Exchange) Template
+# Fame Dex
 
 ## Dex pages 
 * Stacking activity
