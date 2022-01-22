@@ -28,6 +28,7 @@ import { fetchAssets, fetchRate, optIn } from "../../../services/algo";
 import { defaultAssets } from "../../../store/default-assets";
 import { funcSwapAssetV2 } from "../../../store/swap-function";
 import ClipLoader from "react-spinners/ClipLoader";
+import { CheckCircle } from "react-feather";
 
 export const SwapCard: React.FC<{}> = () => {
   let toast = useToast();
@@ -351,7 +352,11 @@ function SelectAsset({
                         onClose();
                       }}
                     >
-                      {asset.name}
+                      <p>
+                         {asset.name } 
+                   {asset.verified &&   <CheckCircle />}
+                      </p>
+                     
                     </Box>
                     <Divider />
                   </Box>
