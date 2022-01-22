@@ -8,8 +8,9 @@ import {
   Heading,
   Text,
   Input,
-  InputGroup,
+  Grid,
   Spacer,
+
   useToast,
   Modal,
   ModalBody,
@@ -19,7 +20,7 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  IconButton,
+  IconButton, GridItem,
 } from "@chakra-ui/react";
 import MyAlgo from "@randlabs/myalgo-connect";
 import React, { useCallback } from "react";
@@ -352,10 +353,18 @@ function SelectAsset({
                         onClose();
                       }}
                     >
-                      <p>
-                         {asset.name } 
-                   {asset.verified &&   <CheckCircle />}
-                      </p>
+                      <Grid templateColumns='repeat(5, 1fr)' gap={3}>
+
+                        <GridItem>
+                          {asset.name }
+                        </GridItem>
+
+                        <GridItem>
+                          {asset.verified &&   <CheckCircle size={15} color={"green"} />}
+                        </GridItem>
+
+
+                      </Grid>
                      
                     </Box>
                     <Divider />
