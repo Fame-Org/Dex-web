@@ -30,6 +30,7 @@ import { defaultAssets } from "../../../store/default-assets";
 import { funcSwapAssetV2 } from "../../../store/swap-function";
 import ClipLoader from "react-spinners/ClipLoader";
 import { CheckCircle } from "react-feather";
+import Asset from "../../../types/assets";
 
 export const SwapCard: React.FC<{}> = () => {
   let toast = useToast();
@@ -41,6 +42,8 @@ export const SwapCard: React.FC<{}> = () => {
   const [exchange, setexchange] = React.useState<number>(0);
   const [loading, setloading] = React.useState<boolean>(false);
   const [optinLoading, setOptinLoading] = React.useState<boolean>(false);
+
+
 
   const GetAccounts = useCallback(async () => {
     try {
@@ -170,14 +173,7 @@ export const SwapCard: React.FC<{}> = () => {
     }
   };
 
-  // React.useEffect(() => {
-  //   // @ts-ignore
-  //   if (typeof AlgoSigner !== "undefined") {
-  //     ConnectAlgoSigner();
-  //   } else {
-  //     console.log("algo signer isnt installed");
-  //   }
-  // }, []);
+
 
   React.useEffect(() => {
     console.log({ from, to });
@@ -312,13 +308,31 @@ export const SwapCard: React.FC<{}> = () => {
 
 function SelectAsset({
   onSelect,
-  selected,
+  selected
 }: {
   onSelect: (value: string) => void;
   selected: string | null;
 }) {
+
+  // the hardcoded assets
+  const [defAssets, setDefAssets] = React.useState<Asset[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  React.useEffect(() => {
+    setDefAssets(defaultAssets)
+  }, [defaultAssets]);
+
+  const searchAsa = (val : string) =>{
+    if(val.length < 1){
+      setDefAssets(defaultAssets)
+      return
+    }
+    const arr = defAssets
+    const searchResult = arr.filter(e => e.name.toLocaleLowerCase().includes(val.toLocaleLowerCase()))
+    setDefAssets(searchResult)
+
+  }
   return (
+
     <>
       <Button
         onClick={onOpen}
@@ -330,18 +344,26 @@ function SelectAsset({
         {selected == null ? "Select" : selected}
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={()=>{
+        onClose()
+        setDefAssets(defaultAssets)
+      }}>
         <ModalOverlay />
         <ModalContent bg="#110A21">
           <ModalHeader>Select Asset</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton  />
           <Divider />
           <ModalBody p="0px">
             <Box p="12px">
-              <Input placeholder="Search Asset" />
+              <Input placeholder="Search Asset" onChange={e => {
+                console.log(e.target.value)
+                let val = e.target.value
+                searchAsa(val)
+
+              }}  />
             </Box>
             <Box h="250px" overflowY="scroll">
-              {defaultAssets.map((asset) => {
+              {defAssets.map((asset) => {
                 return (
                   <Box>
                     <Box
@@ -357,6 +379,8 @@ function SelectAsset({
 
                         <GridItem>
                           {asset.name }
+                         <br/>
+                          {asset.id}
                         </GridItem>
 
                         <GridItem>
